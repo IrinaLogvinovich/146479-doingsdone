@@ -42,6 +42,16 @@ $tasks = [
         "is_done"        => "Нет"
     ]
 ];
+
+function get_number_of_tasks ($name, $tasks) {
+    $count = 0;
+    foreach ($tasks as $key => $value) {
+        if ($value["category"] === $name) {
+            $count++;
+        }
+    }
+    return $count;
+};
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -87,10 +97,10 @@ $tasks = [
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                    <? foreach($projects as $key => $value): ?>
+                    <?php foreach($projects as $key => $value): ?>
                         <li class="main-navigation__list-item">
-                            <a class="main-navigation__list-item-link" href="#"><? print($value); ?></a>
-                            <span class="main-navigation__list-item-count">0</span>
+                            <a class="main-navigation__list-item-link" href="#"><?= $value; ?></a>
+                            <span class="main-navigation__list-item-count"><?= get_number_of_tasks($value, $tasks); ?></span>
                         </li>
                     <? endforeach; ?>
                     </ul>
@@ -119,27 +129,27 @@ $tasks = [
 
                     <label class="checkbox">
                         <!--добавить сюда аттрибут "checked", если переменная $show_complete_tasks равна единице-->
-                        <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?if ($show_complete_tasks === 1) {print("checked");};?>>
+                        <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_complete_tasks === 1) : ?> <?= "checked"; ?><?php endif; ?>>
                         <span class="checkbox__text">Показывать выполненные</span>
                     </label>
                 </div>
 
                 <table class="tasks">
 
-                <? foreach ($tasks as $key => $value) : ?>
-                    <? if ($show_complete_tasks === 1 or ($show_complete_tasks === 0 and $value["is_done"] !== "Да")) : ?>
-                    <tr class="tasks__item task <? if($value["is_done"] === "Да") {print("task--completed");}; ?>">
+                <?php foreach ($tasks as $key => $value) : ?>
+                    <?php if ($show_complete_tasks === 1 or ($show_complete_tasks === 0 and $value["is_done"] !== "Да")) : ?>
+                        <tr class="tasks__item task <?php if($value["is_done"] === "Да") : ?><?= "task--completed"; ?><?php endif; ?>">
                         <td class="task__select">
                             <label class="checkbox task__checkbox">
-                                <input class="checkbox__input visually-hidden" type="checkbox" <? if($value["is_done"] === "Да") {print("checked");}; ?>>
-                                <span class="checkbox__text"><? print($value["name"]); ?></span>
+                            <input class="checkbox__input visually-hidden" type="checkbox" <?php if($value["is_done"] === "Да") : ?><?= "checked"; ?><?php endif; ?>>
+                                <span class="checkbox__text"><?= $value["name"]; ?></span>
                             </label>
                         </td>
-                        <td class="task__date"><? print($value["execution_date"]); ?></td>
+                        <td class="task__date"><?= $value["execution_date"]; ?></td>
                         <td class="task__controls"></td>
                     </tr>
-                    <? endif; ?>
-                <? endforeach; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
 
                 </table>
             </main>
