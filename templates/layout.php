@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title><?=$data['title']?></title>
+    <title><?=$title?></title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/flatpickr.min.css">
@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="user-menu__data">
-                        <p><?=htmlspecialchars($data['username'])?></p>
+                        <p><?=htmlspecialchars($username)?></p>
 
                         <a href="#">Выйти</a>
                     </div>
@@ -42,10 +42,10 @@
 
                 <nav class="main-navigation">
                     <ul class="main-navigation__list">
-                    <?php foreach($data['projects'] as $key => $value): ?>
+                    <?php foreach($projects as $key => $value): ?>
                         <li class="main-navigation__list-item">
                             <a class="main-navigation__list-item-link" href="#"><?=htmlspecialchars($value);?></a>
-                            <span class="main-navigation__list-item-count"><?= get_number_of_tasks($value, $data['tasks']);?></span>
+                            <span class="main-navigation__list-item-count"><?= get_number_of_tasks($value, $tasks);?></span>
                         </li>
                     <? endforeach; ?>
                     </ul>
@@ -55,7 +55,7 @@
                    href="pages/form-project.html" target="project_add">Добавить проект</a>
             </section>
 
-            <main class="content__main"><?=$data['content']?></main>
+            <main class="content__main"><?=$content?></main>
 
         </div>
     </div>

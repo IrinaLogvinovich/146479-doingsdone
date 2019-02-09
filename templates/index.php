@@ -15,19 +15,19 @@
     </nav>
 
     <label class="checkbox">
-        <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($data['show_complete_tasks'] === 1):?> <?= "checked";?><?php endif;?>>
+        <input class="checkbox__input visually-hidden show_completed" type="checkbox" <?php if ($show_complete_tasks === 1):?> checked <?php endif;?>>
         <span class="checkbox__text">Показывать выполненные</span>
     </label>
 </div>
 
 <table class="tasks">
 
-<?php foreach ($data['tasks'] as $key => $value):?>
-    <?php if ($data['show_complete_tasks'] === 1 or ($data['show_complete_tasks'] === 0 and $value["is_done"] !== "Да")):?>
-        <tr class="tasks__item task <?php if($value["is_done"] === "Да"):?><?="task--completed";?><?php endif;?>">
+<?php foreach ($tasks as $key => $value):?>
+    <?php if ($show_complete_tasks === 1 or ($show_complete_tasks === 0 and $value["is_done"] !== "Да")):?>
+<tr class="tasks__item task <?php if($value["is_done"] === "Да"):?> task--completed <?php endif;?><?php if (check_time($value["execution_date"])): ?>task--important<?php endif;?>">
         <td class="task__select">
             <label class="checkbox task__checkbox">
-            <input class="checkbox__input visually-hidden" type="checkbox" <?php if($value["is_done"] === "Да") : ?><?= "checked"; ?><?php endif; ?>>
+            <input class="checkbox__input visually-hidden" type="checkbox" <?php if($value["is_done"] === "Да") : ?>checked<?php endif; ?>>
                 <span class="checkbox__text"><?=htmlspecialchars($value["name"]);?></span>
             </label>
         </td>
