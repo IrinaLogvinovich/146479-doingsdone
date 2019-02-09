@@ -27,4 +27,18 @@ function get_number_of_tasks ($name, $tasks) {
     return $count;
 };
 
+function check_time ($execution_date) {
+    if ($execution_date === "Нет") {
+        return false;
+    };
+    $task_date = strtotime($execution_date);
+    $now = strtotime("now");
+    $date_diff = $task_date - $now;
+    $hour_diff = floor($date_diff/3600);
+    if ($hour_diff > 24) {
+        return false;
+    } else {
+        return true;
+    }
+}
 ?>
