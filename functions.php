@@ -20,7 +20,7 @@ function include_template($name, $data) {
 function get_number_of_tasks ($name, $tasks) {
     $count = 0;
     foreach ($tasks as $key => $value) {
-        if ($value["category"] === $name and $value["is_done"] === "Нет") {
+        if ($value["p_name"] === $name and $value["status"] === "0") {
             $count++;
         }
     }

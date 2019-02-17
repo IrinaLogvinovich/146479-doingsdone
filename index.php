@@ -1,49 +1,30 @@
 <?php
-
 require_once("functions.php");
 
+$connect = mysqli_connect("localhost", "root", "", "doingsdone_146479");
+mysqli_set_charset($connect, "utf8");
+
+$result = mysqli_query($connect, "SELECT name FROM projects WHERE user_id = 1");
+
+if (!$result) {
+    $error = mysqli_error($connect);
+    print("Ошибка MySQL: ". $error);
+};
+
+$projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+$result = mysqli_query($connect, "SELECT t.name AS t_name, execution_date, status, p.name AS p_name FROM tasks t
+JOIN projects p
+ON t.project_id = p.project_id WHERE t.user_id = 1");
+
+if (!$result) {
+    $error = mysqli_error($connect);
+    print("Ошибка MySQL: ". $error);
+};
+
+$tasks = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
 $show_complete_tasks = rand(0, 1);
-
-$projects = ["Входящие", "Учеба", "Работа", "Домашние дела", "Авто"];
-
-$tasks = [
-    0 => [
-        "name"           => "Собеседование в IT компании",
-        "execution_date" => "11.02.2019",
-        "category"       => "Работа",
-        "is_done"        => "Нет"
-    ],
-    1 => [
-        "name"           => "Выполнить тестовое задание",
-        "execution_date" => "25.12.2018",
-        "category"       => "Работа",
-        "is_done"        => "Нет"
-    ],
-    2 => [
-        "name"           => "Сделать задание первого раздела",
-        "execution_date" => "21.12.2019",
-        "category"       => "Учеба",
-        "is_done"        => "Да"
-    ],
-    3 => [
-        "name"           => "Встреча с другом",
-        "execution_date" => "22.12.2019",
-        "category"       => "Входящие",
-        "is_done"        => "Нет"
-    ],
-    4 => [
-        "name"           => "Купить корм для кота",
-        "execution_date" => "Нет",
-        "category"       => "Домашние дела",
-        "is_done"        => "Нет"
-    ],
-    5 => [
-        "name"           => "Заказать пиццу",
-        "execution_date" => "Нет",
-        "category"       => "Домашние дела",
-        "is_done"        => "Нет"
-    ]
-];
 
 $title = "Дела в порядке";
 
@@ -65,4 +46,3 @@ $layout = include_template('layout.php', [
 print($layout);
 
 ?>
-
