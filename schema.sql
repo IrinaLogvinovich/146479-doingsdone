@@ -1,35 +1,37 @@
-CREATE DATABASE doings
+CREATE DATABASE doingsdone_146479
  DEFAULT CHARACTER SET utf8
  DEFAULT COLLATE utf8_general_ci;
 
-USE doings;
+USE doingsdone_146479;
+
+CREATE TABLE users (
+user_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+registration_date DATETIME NOT NULL,
+email VARCHAR(128) UNIQUE NOT NULL,
+name VARCHAR(128) NOT NULL,
+password VARCHAR(128) NOT NULL
+);
 
 CREATE TABLE projects (
-id  INT AUTO_INCREMENT PRIMARY KEY,
-project_name  CHAR(128) UNIQUE,
-author INT
+project_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(128) NOT NULL,
+user_id INT UNSIGNED NOT NULL,
+FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
 CREATE TABLE tasks (
-id  INT AUTO_INCREMENT PRIMARY KEY,
-create_date DATETIME,
-execution_date DATETIME,
-task_status INT DEFAULT 0,
-task_name  CHAR(255),
-task_file CHAR(255),
-period_time DATETIME,
-author INT,
-project INT
+task_id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+create_date DATETIME NOT NULL,
+execution_date DATETIME NOT NULL,
+status TINYINT UNSIGNED DEFAULT 0 NOT NULL,
+name VARCHAR(255) NOT NULL,
+file VARCHAR(255),
+period DATETIME,
+user_id INT UNSIGNED NOT NULL,
+project_id INT UNSIGNED NOT NULL,
+FOREIGN KEY (user_id) REFERENCES users (user_id),
+FOREIGN KEY (project_id) REFERENCES projects (project_id)
 );
 
-CREATE TABLE users (
-id INT AUTO_INCREMENT PRIMARY KEY,
-registration_date DATETIME,
-email CHAR(128) UNIQUE NOT NULL,
-name_user CHAR(128) NOT NULL,
-user_password  CHAR(128) NOT NULL
-);
 
-CREATE UNIQUE INDEX mail ON users(email);
-CREATE INDEX task ON tasks(task_name);
-CREATE UNIQUE INDEX project ON projects(project_name);
+

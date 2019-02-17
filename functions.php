@@ -32,13 +32,12 @@ function check_time ($execution_date) {
         return false;
     };
     $task_date = strtotime($execution_date);
-    $now = strtotime("now");
+    $now = time();
     $date_diff = $task_date - $now;
     $hour_diff = floor($date_diff/3600);
     if ($hour_diff > 24) {
         return false;
-    } else {
-        return true;
-    }
+    };
+    return true;
 }
 ?>
