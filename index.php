@@ -1,25 +1,26 @@
 <?php
-require_once("functions.php");
+require_once("init.php");
 
-$connect = mysqli_connect("localhost", "root", "", "doingsdone_146479");
-mysqli_set_charset($connect, "utf8");
+$projects = [];
+$tasks = [];
 
-$result = mysqli_query($connect, "SELECT name FROM projects WHERE user_id = 1");
+$result = mysqli_query($connect, "SELECT p.name AS p_name, COUNT(t.project_id) AS p_count FROM projects p
+    LEFT JOIN tasks t ON t.project_id = p.project_id WHERE p.user_id = 1 GROUP BY t.project_id");
 
 if (!$result) {
     $error = mysqli_error($connect);
-    print("Ошибка MySQL: ". $error);
+    print("Что-то пошло не так. Попробуйте еще раз.");
+    exit();
 };
 
 $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$result = mysqli_query($connect, "SELECT t.name AS t_name, execution_date, status, p.name AS p_name FROM tasks t
-JOIN projects p
-ON t.project_id = p.project_id WHERE t.user_id = 1");
+$result = mysqli_query($connect, "SELECT name, execution_date, status FROM tasks WHERE user_id = 1");
 
 if (!$result) {
     $error = mysqli_error($connect);
-    print("Ошибка MySQL: ". $error);
+    print("Что-то пошло не так. Попробуйте еще раз.");
+    exit();
 };
 
 $tasks = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -44,5 +45,4 @@ $layout = include_template('layout.php', [
 ]);
 
 print($layout);
-
 ?>

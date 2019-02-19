@@ -17,16 +17,6 @@ function include_template($name, $data) {
     return $result;
 }
 
-function get_number_of_tasks ($name, $tasks) {
-    $count = 0;
-    foreach ($tasks as $key => $value) {
-        if ($value["p_name"] === $name and $value["status"] === "0") {
-            $count++;
-        }
-    }
-    return $count;
-};
-
 function check_time ($execution_date) {
     if ($execution_date === "Нет") {
         return false;
@@ -40,4 +30,5 @@ function check_time ($execution_date) {
     };
     return true;
 }
+
 ?>
