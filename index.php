@@ -3,8 +3,11 @@ require_once("init.php");
 
 $projects = [];
 $tasks = [];
+$user = [
+    'user_id' => 1
+];
 
-$result = mysqli_query($connect, "SELECT p.name AS p_name, COUNT(t.project_id) AS p_count FROM projects p
+$result = mysqli_query($connect, "SELECT p.name AS p_name, COUNT(t.project_id) AS p_count, p.project_id AS p_project_id FROM projects p
     LEFT JOIN tasks t ON t.project_id = p.project_id WHERE p.user_id = 1 GROUP BY t.project_id");
 
 if (!$result) {
@@ -15,7 +18,7 @@ if (!$result) {
 
 $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$result = mysqli_query($connect, "SELECT name, execution_date, status FROM tasks WHERE user_id = 1");
+$result = mysqli_query($connect, "SELECT name, execution_date, status, project_id FROM tasks WHERE user_id = 1");
 
 if (!$result) {
     $error = mysqli_error($connect);
@@ -41,7 +44,7 @@ $layout = include_template('layout.php', [
     'username' => $username,
     'projects' => $projects,
     'content'=> $content,
-    'tasks'=>$tasks
+    'tasks'=> $tasks
 ]);
 
 print($layout);
