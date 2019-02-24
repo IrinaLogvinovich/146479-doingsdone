@@ -3,12 +3,9 @@ require_once("init.php");
 
 $projects = [];
 $tasks = [];
-$user = [
-    'user_id' => 1
-];
 
 $result = mysqli_query($connect, "SELECT p.name AS p_name, COUNT(t.project_id) AS p_count, p.project_id AS p_project_id FROM projects p
-    LEFT JOIN tasks t ON t.project_id = p.project_id WHERE p.user_id = 1 GROUP BY t.project_id");
+    LEFT JOIN tasks t ON t.project_id = p.project_id WHERE p.user_id = ".$user['user_id']." GROUP BY t.project_id");
 
 if (!$result) {
     $error = mysqli_error($connect);
@@ -18,7 +15,12 @@ if (!$result) {
 
 $projects = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
-$result = mysqli_query($connect, "SELECT name, execution_date, status, project_id FROM tasks WHERE user_id = 1");
+if (isset($_GET['id'])) {
+    $id = mysqli_real_escape_string($connect, $_GET['id']);
+    $result = mysqli_query($connect, "SELECT name, execution_date, status, project_id FROM tasks WHERE user_id = ".$user['user_id']." AND project_id = ".$id);
+} else {
+    $result = mysqli_query($connect, "SELECT name, execution_date, status, project_id FROM tasks WHERE user_id = ".$user['user_id']);
+};
 
 if (!$result) {
     $error = mysqli_error($connect);
@@ -30,18 +32,18 @@ $tasks = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 $show_complete_tasks = rand(0, 1);
 
-$title = "Дела в порядке";
-
-$username = "Константин";
-
-$content = include_template('index.php', [
-    'show_complete_tasks' => $show_complete_tasks,
-    'tasks' => $tasks,
-]);
+if ($tasks) {
+    $content = include_template('index.php', [
+        'show_complete_tasks' => $show_complete_tasks,
+        'tasks' => $tasks,
+    ]);
+} else {
+    $content = "По этому проекту нет задач";
+}
 
 $layout = include_template('layout.php', [
     'title' => $title,
-    'username' => $username,
+    'user' => $user,
     'projects' => $projects,
     'content'=> $content,
     'tasks'=> $tasks

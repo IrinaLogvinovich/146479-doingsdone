@@ -21,61 +21,25 @@
 </div>
 
 <table class="tasks">
-<?php
-if (isset($_GET['id'])) {
-    $count = 0;
-    foreach ($tasks as $key => $value) {
-        if ($value['project_id'] === $_GET['id']) {
-            $count++;
-        }
-    };
-    if (!$count) {
-        http_response_code(404);
-    };
-    if ($count) : ?>
-        <?php foreach ($tasks as $key => $value):?>
-            <?php if ($value['execution_date'] === null) {
-                    $value['execution_date'] = "Нет";
-                } else {
-                    $value['execution_date'] = date("d.m.Y", strtotime($value['execution_date']));
-            }?>
-            <?php if ($show_complete_tasks === 1 or ($show_complete_tasks === 0 and $value["status"] !== "1")):?>
-                <?php if ($value['project_id'] === $_GET['id']) : ?>
-                <tr class="tasks__item task <?php if($value["status"] === "1"):?> task--completed <?php endif;?><?php if (check_time($value["execution_date"])): ?>task--important<?php endif;?>">
-                    <td class="task__select">
-                        <label class="checkbox task__checkbox">
-                        <input class="checkbox__input visually-hidden" type="checkbox" <?php if($value["status"] === "1") : ?>checked<?php endif; ?>>
-                            <span class="checkbox__text"><?=htmlspecialchars($value["name"]);?></span>
-                        </label>
-                    </td>
-                    <td class="task__date"><?=$value["execution_date"];?></td>
-                    <td class="task__controls"></td>
-                </tr>
-                <?php endif; ?>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    <?php endif;?>
-<?php };?>
-<?if (!isset($_GET['id'])) :?>
-    <?php foreach ($tasks as $key => $value):?>
-        <?php if ($value['execution_date'] === null) {
-                $value['execution_date'] = "Нет";
-            } else {
-                $value['execution_date'] = date("d.m.Y", strtotime($value['execution_date']));
-        }?>
-        <?php if ($show_complete_tasks === 1 or ($show_complete_tasks === 0 and $value["status"] !== "1")):?>
-            <tr class="tasks__item task <?php if($value["status"] === "1"):?> task--completed <?php endif;?><?php if (check_time($value["execution_date"])): ?>task--important<?php endif;?>">
-                <td class="task__select">
-                    <label class="checkbox task__checkbox">
-                    <input class="checkbox__input visually-hidden" type="checkbox" <?php if($value["status"] === "1") : ?>checked<?php endif; ?>>
-                        <span class="checkbox__text"><?=htmlspecialchars($value["name"]);?></span>
-                    </label>
-                </td>
-                <td class="task__date"><?=$value["execution_date"];?></td>
-                <td class="task__controls"></td>
-            </tr>
-        <?php endif; ?>
-    <?php endforeach; ?>
-<?php endif;?>
-</table>
 
+<?php foreach ($tasks as $key => $value):?>
+    <?php if ($value['execution_date'] === null) {
+            $value['execution_date'] = "Нет";
+        } else {
+            $value['execution_date'] = date("d.m.Y", strtotime($value['execution_date']));
+        }?>
+    <?php if ($show_complete_tasks === 1 or ($show_complete_tasks === 0 and $value["status"] !== "1")):?>
+        <tr class="tasks__item task <?php if($value["status"] === "1"):?> task--completed <?php endif;?><?php if (check_time($value["execution_date"])): ?>task--important<?php endif;?>">
+            <td class="task__select">
+                <label class="checkbox task__checkbox">
+                <input class="checkbox__input visually-hidden" type="checkbox" <?php if($value["status"] === "1") : ?>checked<?php endif; ?>>
+                    <span class="checkbox__text"><?=htmlspecialchars($value["name"]);?></span>
+                </label>
+            </td>
+            <td class="task__date"><?=$value["execution_date"];?></td>
+            <td class="task__controls"></td>
+        </tr>
+    <?php endif; ?>
+<?php endforeach; ?>
+
+</table>
