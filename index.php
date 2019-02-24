@@ -4,7 +4,7 @@ require_once("init.php");
 $projects = [];
 $tasks = [];
 
-$result = mysqli_query($connect, "SELECT p.name AS p_name, COUNT(t.project_id) AS p_count, p.project_id AS p_project_id FROM projects p
+$result = mysqli_query($connect, "SELECT p.name AS p_name, (SELECT COUNT(*) FROM tasks WHERE project_id = p.project_id AND status = 0) AS p_count, p.project_id AS p_project_id FROM projects p
     LEFT JOIN tasks t ON t.project_id = p.project_id WHERE p.user_id = ".$user['user_id']." GROUP BY t.project_id");
 
 if (!$result) {
